@@ -31,5 +31,40 @@ describe("Enhancer", () => {
         durability: 45,
       });
     });
+
+    test("doesn't change enhancement if === 20", () => {
+      const newItem = { name: "sahar", durability: 45, enhancement: 20 };
+      const succeeded = enhancer.success(newItem);
+      expect(succeeded).toMatchObject(newItem);
+    });
+  });
+
+  describe("fail", () => {
+    const smallEnhancement = {
+      name: "sahar",
+      durability: 45,
+      enhancement: 14,
+    };
+    const bigEnhancement = { name: "sahar", durability: 45, enhancement: 19 };
+
+    test("enhancement doesn't change when < 15", () => {
+      expect(enhancer.fail(smallEnhancement)).toHaveProperty(
+        "enhancement",
+        smallEnhancement.enhancement
+      );
+    });
+    test("durability changes as expected", () => {
+      expect(enhancer.fail(smallEnhancement)).toHaveProperty("durability", 40);
+      expect(enhancer.fail(bigEnhancement)).toHaveProperty("durability", 35);
+    });
+
+    test("enhancement should change when > 16", () => {
+      expect(enhancer.fail(bigEnhancement)).toHaveProperty("enhancement", 18);
+    });
+    test("should not change the rest of the item object", () => {
+      expect(enhancer.fail(bigEnhancement)).toMatchObject({
+        name: "sahar",
+      });
+    });
   });
 });

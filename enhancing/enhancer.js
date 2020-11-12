@@ -5,7 +5,6 @@ module.exports = {
   get,
 };
 
-// accepts an item object and returns a new item object modified according to the rules defined by the client
 function success(item) {
   let { enhancement } = item;
 
@@ -16,10 +15,19 @@ function success(item) {
 }
 
 function fail(item) {
-  return { ...item };
+  let { enhancement, durability } = item;
+  if (enhancement < 15) {
+    durability -= 5;
+  } else {
+    durability -= 10;
+    if (enhancement > 16) {
+      enhancement -= 1;
+    }
+  }
+
+  return { ...item, enhancement, durability };
 }
 
-// accepts an item object and returns a new item with the durability restored to 100.
 function repair(item) {
   return { ...item, durability: 100 };
 }
