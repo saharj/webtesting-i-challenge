@@ -67,4 +67,22 @@ describe("Enhancer", () => {
       });
     });
   });
+
+  describe("get", () => {
+    test("should not change name when enhancement is 0", () => {
+      const zeroEnhance = { name: "sahar", durability: 45, enhancement: 0 };
+      expect(enhancer.get(zeroEnhance)).toMatchObject(zeroEnhance);
+    });
+
+    test("should add enhancement to the name", () => {
+      expect(enhancer.get(item)).toHaveProperty("name", "[+16] sahar");
+    });
+
+    test("should not change the rest of the item object", () => {
+      expect(enhancer.get(item)).toMatchObject({
+        durability: 45,
+        enhancement: 16,
+      });
+    });
+  });
 });
